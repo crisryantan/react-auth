@@ -1,5 +1,5 @@
 {
-  "name": "userrecords",
+  "name": "react-auth-server",
   "description": "User Records api",
   "version": "0.0.0",
   "scripts": {
