@@ -71,10 +71,7 @@ module.exports = {
    * Find user by Id
    */
   findById: function(req, res) {
-    User.findOne({ _id: req.params.id }, 'name username email', function(
-      err,
-      user
-    ) {
+    User.findOne({ _id: req.params.id }, '', function(err, user) {
       if (err) {
         return res.send(err);
       } else {
