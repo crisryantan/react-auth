@@ -1,6 +1,6 @@
 /**
  *
- * Login
+ * Register
  *
  */
 
@@ -10,12 +10,14 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
+import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
+import makeSelectRegister from './selectors';
+import reducer from './reducer';
+import saga from './saga';
+
 import { Form, Input } from 'antd';
 import styled from 'styled-components';
-
-import makeSelectLogin from './selectors';
-import reducer from './reducer';
 
 const Wrapper = styled.div`
   width: 400px;
@@ -23,7 +25,7 @@ const Wrapper = styled.div`
 `;
 
 /* eslint-disable react/prefer-stateless-function */
-export class Login extends React.Component {
+export class Register extends React.PureComponent {
   render() {
     return (
       <Wrapper>
@@ -36,12 +38,12 @@ export class Login extends React.Component {
   }
 }
 
-Login.propTypes = {
+Register.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = createStructuredSelector({
-  login: makeSelectLogin()
+  register: makeSelectRegister()
 });
 
 function mapDispatchToProps(dispatch) {
@@ -55,9 +57,11 @@ const withConnect = connect(
   mapDispatchToProps
 );
 
-const withReducer = injectReducer({ key: 'login', reducer });
+const withReducer = injectReducer({ key: 'register', reducer });
+const withSaga = injectSaga({ key: 'register', saga });
 
 export default compose(
   withReducer,
+  withSaga,
   withConnect
-)(Login);
+)(Register);
