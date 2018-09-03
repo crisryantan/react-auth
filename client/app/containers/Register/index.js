@@ -10,29 +10,55 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
+import { SubmitBtn } from 'components/commonStyled';
+
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import makeSelectRegister from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
-import { Form, Input } from 'antd';
+import { Card, Input, Select } from 'antd';
 import styled from 'styled-components';
 
+const Option = Select.Option;
 const Wrapper = styled.div`
-  width: 400px;
+  width: 500px;
   margin: 40px auto;
 `;
 
+const cardWidth = { width: 420 };
+
 /* eslint-disable react/prefer-stateless-function */
 export class Register extends React.PureComponent {
+  state = {
+    form: {
+      username: '',
+      password: '',
+      fullname: '',
+      userType: ''
+    }
+  };
+
   render() {
     return (
       <Wrapper>
-        <div>
-          <Input />
-          <Input type="password" />
-        </div>
+        <Card title="Register Form" style={cardWidth}>
+          <p>
+            <Input placeholder="Username" />
+          </p>
+          <p>
+            <Input type="password" placeholder="Password" />
+          </p>
+          <p>
+            <Input placeholder="Fullname" />
+          </p>
+          <Select defaultValue="User" style={{ width: '100%' }}>
+            <Option value="User">User</Option>
+            <Option value="Admin">Admin</Option>
+          </Select>
+          <SubmitBtn>Register</SubmitBtn>
+        </Card>
       </Wrapper>
     );
   }
