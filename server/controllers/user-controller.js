@@ -13,7 +13,9 @@ var env = process.NODE_ENV || 'development';
  */
 function createToken(user) {
   var payload = {
-    // exp: moment().add(14, 'days').unix(), no expiration for now
+    exp: moment()
+      .add(7, 'days')
+      .unix(),
     iat: moment().unix(),
     sub: user._id
   };
@@ -26,16 +28,16 @@ module.exports = {
    * Create  user
    */
   create: function(req, res) {
-    User.findOne({ email: req.body.email }, function(err, existingUser) {
+    User.findOne({ username: req.body.username }, function(err, existingUser) {
       if (existingUser) {
-        return res.status(409).send({ message: 'Email is already taken.' });
+        return res.status(409).send({ message: 'username is already taken.' });
       }
 
       var user = new User({
-        email: req.body.email,
         password: req.body.password,
         username: req.body.username,
-        fullname: req.body.fullname
+        fullname: req.body.fullname,
+        userType: req.body.userType
       });
 
       bcrypt.genSalt(10, function(err, salt) {
@@ -120,7 +122,7 @@ module.exports = {
       if (!user) {
         return res
           .status(401)
-          .send({ message: { email: 'Incorrect username' } });
+          .send({ message: { username: 'Incorrect username' } });
       }
       bcrypt.compare(req.body.password, user.password, function(err, isMatch) {
         if (!isMatch) {
