@@ -2,6 +2,7 @@
 
 var express = require('express');
 var app = express();
+var cors = require('cors');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 var port = process.env.PORT || 8001;
@@ -18,6 +19,7 @@ mongoose.connection.on('connected', function() {
   console.log('Mongoose default connection open to ' + dbURI);
 });
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
