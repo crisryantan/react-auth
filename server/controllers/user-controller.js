@@ -1,10 +1,12 @@
 'use strict';
-var jwt = require('jwt-simple');
-var User = require('../models/user-model');
-var bcrypt = require('bcryptjs');
-var moment = require('moment');
-var config = require('../config');
-var env = process.NODE_ENV || 'development';
+const jwt = require('jwt-simple');
+const User = require('../models/user-model');
+const bcrypt = require('bcryptjs');
+const moment = require('moment');
+const config = require('../config');
+const env = process.NODE_ENV || 'development';
+
+const requiredFields = ['username', 'password', 'fullname', 'userType'];
 
 /*
  |--------------------------------------------------------------------------
@@ -12,7 +14,7 @@ var env = process.NODE_ENV || 'development';
  |--------------------------------------------------------------------------
  */
 function createToken(user) {
-  var payload = {
+  const payload = {
     exp: moment()
       .add(7, 'days')
       .unix(),
@@ -29,11 +31,28 @@ module.exports = {
    */
   create: function(req, res) {
     User.findOne({ username: req.body.username }, function(err, existingUser) {
+      console.log(existingUser);
       if (existingUser) {
-        return res.status(409).send({ message: 'username is already taken.' });
+        return res.status(401).send({
+          error: {
+            message: 'username is already taken.'
+          }
+        });
       }
 
-      var user = new User({
+      const hasAllFields = requiredFields.every(field => {
+        return req.body[field];
+      });
+
+      if (!hasAllFields) {
+        return res.status(401).send({
+          error: {
+            message: 'enter all required fields.'
+          }
+        });
+      }
+
+      const user = new User({
         password: req.body.password,
         username: req.body.username,
         fullname: req.body.fullname,
@@ -45,7 +64,7 @@ module.exports = {
           user.password = hash;
 
           user.save(function() {
-            var token = createToken(user);
+            const token = createToken(user);
             res.send({ token: token, user: user });
           });
         });
@@ -83,6 +102,18 @@ module.exports = {
   },
 
   updateById: function(req, res) {
+    const hasAllFields = requiredFields.every(field => {
+      return req.body[field];
+    });
+
+    if (!hasAllFields) {
+      return res.status(401).send({
+        error: {
+          message: 'enter all required fields.'
+        }
+      });
+    }
+
     User.findOneAndUpdate({ _id: req.params.id }, req.body, function(
       err,
       user
@@ -134,7 +165,7 @@ module.exports = {
         user = user.toObject();
         delete user.password;
 
-        var token = createToken(user);
+        const token = createToken(user);
         res.send({ token: token, user: user });
       });
     });

@@ -15,8 +15,14 @@ var userSchema = new Schema({
     select: false,
     required: true
   },
-  fullname: String,
-  userType: String,
+  fullname: {
+    type: String,
+    required: true
+  },
+  userType: {
+    type: String,
+    required: true
+  },
   createdAt: {
     type: Date,
     default: Date.now
