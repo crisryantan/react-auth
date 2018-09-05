@@ -15,8 +15,8 @@ import { Card, Input } from 'antd';
 import styled from 'styled-components';
 
 import { SubmitBtn } from 'components/commonStyled';
+import { makeSelectAuthorized } from 'containers/App/selectors';
 
-import makeSelectLogin from './selectors';
 import reducer from './reducer';
 
 const Wrapper = styled.div`
@@ -26,6 +26,16 @@ const Wrapper = styled.div`
 
 /* eslint-disable react/prefer-stateless-function */
 export class Login extends React.Component {
+  static contextTypes = {
+    router: PropTypes.object
+  };
+
+  componentDidMount() {
+    if (this.props.loggedIn) {
+      this.context.router.history.push('/');
+    }
+  }
+
   render() {
     return (
       <Wrapper>
@@ -45,11 +55,12 @@ export class Login extends React.Component {
 }
 
 Login.propTypes = {
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = createStructuredSelector({
-  login: makeSelectLogin()
+  loggedIn: makeSelectAuthorized()
 });
 
 function mapDispatchToProps(dispatch) {

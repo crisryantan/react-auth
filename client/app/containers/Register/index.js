@@ -11,11 +11,9 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import { SubmitBtn } from 'components/commonStyled';
+import { makeSelectAuthorized } from 'containers/App/selectors';
 
 import injectSaga from 'utils/injectSaga';
-import injectReducer from 'utils/injectReducer';
-import makeSelectRegister from './selectors';
-import reducer from './reducer';
 import saga from './saga';
 
 import { registerAcct } from './actions';
@@ -41,6 +39,16 @@ export class Register extends React.PureComponent {
       userType: 'User'
     }
   };
+
+  static contextTypes = {
+    router: PropTypes.object
+  };
+
+  componentDidMount() {
+    if (this.props.loggedIn) {
+      this.context.router.history.push('/');
+    }
+  }
 
   updateField = (value, key) => {
     this.setState({
@@ -94,11 +102,12 @@ export class Register extends React.PureComponent {
 }
 
 Register.propTypes = {
-  registerAcct: PropTypes.func.isRequired
+  registerAcct: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = createStructuredSelector({
-  register: makeSelectRegister()
+  loggedIn: makeSelectAuthorized()
 });
 
 function mapDispatchToProps(dispatch) {
@@ -112,11 +121,9 @@ const withConnect = connect(
   mapDispatchToProps
 );
 
-const withReducer = injectReducer({ key: 'register', reducer });
 const withSaga = injectSaga({ key: 'register', saga });
 
 export default compose(
-  withReducer,
   withSaga,
   withConnect
 )(Register);
