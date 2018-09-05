@@ -42,6 +42,14 @@ function tokenExpired(res) {
 }
 
 module.exports = {
+  verifyToken: function(req, res) {
+    const authenticated = verifyToken(req.body.token);
+    if (authenticated === 200) {
+      return res.send(200);
+    }
+    tokenExpired(res);
+  },
+
   create: function(req, res) {
     return User.findOne({ username: req.body.username }, function(
       err,
