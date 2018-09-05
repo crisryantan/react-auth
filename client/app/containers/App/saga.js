@@ -1,5 +1,5 @@
 import { takeEvery, take, call, put, select, all } from 'redux-saga/effects';
-import { userStateLoad } from 'utils/localStorage';
+import { userStateLoad, userStateDelete } from 'utils/localStorage';
 import { postRequest, setToken, getRequest } from 'utils/request';
 
 import { userLoggedIn, userLogout as userLogoutAction } from './actions';

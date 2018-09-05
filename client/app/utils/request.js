@@ -8,9 +8,7 @@ const instance = axios.create({
 });
 
 export const setToken = token => {
-  // axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
   instance.defaults.headers.common['token'] = token;
-  // return {};
 };
 
 export const unsetToken = () => {

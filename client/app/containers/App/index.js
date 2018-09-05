@@ -13,16 +13,18 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectLoading } from './selectors';
-import reducer from './reducer';
-import saga from './saga';
+
+import PrivateRoute from 'router/PrivateRoute';
 
 import Header from 'components/Header';
-
 import HomePage from 'containers/HomePage/Loadable';
 import Login from 'containers/Login/Loadable';
 import Register from 'containers/Register/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+
+import { makeSelectLoading } from './selectors';
+import reducer from './reducer';
+import saga from './saga';
 
 import { appStarted } from './actions';
 
@@ -32,9 +34,9 @@ export class App extends React.PureComponent {
     this.props.appStarted();
   }
 
-  applicationRoutes = () => (
+  applicationRoutes = isLoading => (
     <Switch>
-      <Route exact path="/" component={HomePage} />
+      <PrivateRoute exact path="/" component={HomePage} isLoading={isLoading} />
       <Route exact path="/login" component={Login} />
       <Route exact path="/register" component={Register} />
       <Route component={NotFoundPage} />
@@ -42,10 +44,11 @@ export class App extends React.PureComponent {
   );
 
   render() {
+    const { loading } = this.props;
     return (
       <div>
         <Header />
-        {!this.props.loading && this.applicationRoutes()}
+        {!loading && this.applicationRoutes(loading)}
       </div>
     );
   }

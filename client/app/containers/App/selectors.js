@@ -14,4 +14,7 @@ const selectAppDomain = state => state.get('app', initialState);
 const makeSelectLoading = () =>
   createSelector(selectAppDomain, substate => substate.get('loading'));
 
-export { makeSelectLoading };
+const makeSelectAuthorized = () =>
+  createSelector(selectAppDomain, substate => substate.get('authorized'));
+
+export { makeSelectLoading, makeSelectAuthorized };
