@@ -3,16 +3,16 @@ import axios from 'axios';
 const instance = axios.create({
   baseURL: 'http://localhost:8001/api',
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 });
 
 export const setToken = token => {
-  instance.defaults.headers.common['token'] = token;
+  instance.defaults.headers.common.token = token;
 };
 
 export const unsetToken = () => {
-  delete instance.defaults.headers.common['token'];
+  delete instance.defaults.headers.token;
 };
 
 export function getRequest(url) {

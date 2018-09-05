@@ -10,7 +10,7 @@ import { USER_LOGOUT, USER_LOGIN_SUCCESS } from './constants';
 export const initialState = fromJS({
   loading: true,
   authorized: false,
-  user: undefined
+  user: undefined,
 });
 
 function appReducer(state = initialState, action) {

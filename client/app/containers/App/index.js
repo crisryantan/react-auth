@@ -56,22 +56,22 @@ export class App extends React.PureComponent {
 
 App.propTypes = {
   appStarted: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired
+  loading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: makeSelectLoading()
+  loading: makeSelectLoading(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    appStarted: () => dispatch(appStarted())
+    appStarted: () => dispatch(appStarted()),
   };
 }
 
 const withConnect = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 );
 
 const withReducer = injectReducer({ key: 'app', reducer });
@@ -81,6 +81,6 @@ export default withRouter(
   compose(
     withReducer,
     withSaga,
-    withConnect
-  )(App)
+    withConnect,
+  )(App),
 );

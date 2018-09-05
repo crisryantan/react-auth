@@ -46,17 +46,17 @@ const PrivateRoute = props => {
 PrivateRoute.propTypes = {
   computedMatch: PropTypes.shape({
     params: PropTypes.shape({
-      stepName: PropTypes.string
-    })
+      stepName: PropTypes.string,
+    }),
   }),
   component: PropTypes.func,
   render: PropTypes.func,
   isLoggedIn: PropTypes.bool,
-  isLoading: PropTypes.bool
+  isLoading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
-  isLoggedIn: makeSelectAuthorized()
+  isLoggedIn: makeSelectAuthorized(),
 });
 
 const withConnect = connect(mapStateToProps);

@@ -1,6 +1,6 @@
-import { takeEvery, take, call, put, select, all } from 'redux-saga/effects';
+import { takeEvery, call, put, all } from 'redux-saga/effects';
 import { userStateLoad, userStateDelete } from 'utils/localStorage';
-import { postRequest, setToken, getRequest } from 'utils/request';
+import { postRequest, setToken } from 'utils/request';
 
 import { userLoggedIn, userLogout as userLogoutAction } from './actions';
 import { APP_STARTED } from './constants';
@@ -28,7 +28,7 @@ export function* getSavedUser() {
 export function* isTokenValid(persistedState) {
   try {
     const response = yield call(postRequest, '/verifyToken', {
-      token: persistedState.token
+      token: persistedState.token,
     });
 
     return !!response && response.status === 200;

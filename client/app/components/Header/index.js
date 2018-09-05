@@ -39,6 +39,8 @@ const NavWrapper = styled.nav`
   }
 `;
 
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
 function Header() {
   return (
     <NavWrapper>

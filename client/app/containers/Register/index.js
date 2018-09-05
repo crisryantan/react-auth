@@ -9,6 +9,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { Card, Input, Select } from 'antd';
+import styled from 'styled-components';
 
 import { SubmitBtn } from 'components/commonStyled';
 import { makeSelectAuthorized } from 'containers/App/selectors';
@@ -18,10 +20,7 @@ import saga from './saga';
 
 import { registerAcct } from './actions';
 
-import { Card, Input, Select } from 'antd';
-import styled from 'styled-components';
-
-const Option = Select.Option;
+const { Option } = Select;
 const Wrapper = styled.div`
   width: 500px;
   margin: 40px auto;
@@ -36,12 +35,12 @@ export class Register extends React.PureComponent {
       username: '',
       password: '',
       fullname: '',
-      userType: 'User'
-    }
+      userType: 'User',
+    },
   };
 
   static contextTypes = {
-    router: PropTypes.object
+    router: PropTypes.object,
   };
 
   componentDidMount() {
@@ -54,8 +53,8 @@ export class Register extends React.PureComponent {
     this.setState({
       form: {
         ...this.state.form,
-        [key]: value
-      }
+        [key]: value,
+      },
     });
   };
 
@@ -103,27 +102,27 @@ export class Register extends React.PureComponent {
 
 Register.propTypes = {
   registerAcct: PropTypes.func.isRequired,
-  loggedIn: PropTypes.bool.isRequired
+  loggedIn: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loggedIn: makeSelectAuthorized()
+  loggedIn: makeSelectAuthorized(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    registerAcct: payload => dispatch(registerAcct(payload))
+    registerAcct: payload => dispatch(registerAcct(payload)),
   };
 }
 
 const withConnect = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 );
 
 const withSaga = injectSaga({ key: 'register', saga });
 
 export default compose(
   withSaga,
-  withConnect
+  withConnect,
 )(Register);

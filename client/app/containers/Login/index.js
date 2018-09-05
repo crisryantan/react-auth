@@ -27,7 +27,7 @@ const Wrapper = styled.div`
 /* eslint-disable react/prefer-stateless-function */
 export class Login extends React.Component {
   static contextTypes = {
-    router: PropTypes.object
+    router: PropTypes.object,
   };
 
   componentDidMount() {
@@ -55,28 +55,25 @@ export class Login extends React.Component {
 }
 
 Login.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  loggedIn: PropTypes.bool.isRequired
+  loggedIn: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  loggedIn: makeSelectAuthorized()
+  loggedIn: makeSelectAuthorized(),
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch
-  };
+function mapDispatchToProps() {
+  return {};
 }
 
 const withConnect = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 );
 
 const withReducer = injectReducer({ key: 'login', reducer });
 
 export default compose(
   withReducer,
-  withConnect
+  withConnect,
 )(Login);

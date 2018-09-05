@@ -4,7 +4,7 @@ export const userStateSave = state => {
   // eslint-disable-line consistent-return
   try {
     const serializedState = JSON.stringify({ ...state, storageVersion });
-    localStorage.setItem('user', serializedState);
+    return localStorage.setItem('user', serializedState);
   } catch (error) {
     return undefined;
   }
