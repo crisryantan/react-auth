@@ -1,11 +1,27 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:8001';
-axios.defaults.headers.post['Content-Type'] =
-  'application/x-www-form-urlencoded';
+const instance = axios.create({
+  baseURL: 'http://localhost:8001/api',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
+export const setToken = token => {
+  // axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+  instance.defaults.headers.common['token'] = token;
+  // return {};
+};
+
+export const unsetToken = () => {
+  delete instance.defaults.headers.common['token'];
+};
 
 export function getRequest(url) {
-  return axios.get(url);
+  return instance
+    .get(url)
+    .then(parseJSON)
+    .catch(handleError);
 }
 
 export function postRequest(url, body) {

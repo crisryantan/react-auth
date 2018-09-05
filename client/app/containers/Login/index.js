@@ -11,14 +11,16 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 import injectReducer from 'utils/injectReducer';
-import { Form, Input } from 'antd';
+import { Card, Input } from 'antd';
 import styled from 'styled-components';
+
+import { SubmitBtn } from 'components/commonStyled';
 
 import makeSelectLogin from './selectors';
 import reducer from './reducer';
 
 const Wrapper = styled.div`
-  width: 400px;
+  width: 500px;
   margin: 40px auto;
 `;
 
@@ -27,10 +29,16 @@ export class Login extends React.Component {
   render() {
     return (
       <Wrapper>
-        <div>
-          <Input />
-          <Input type="password" />
-        </div>
+        <Card title="Login Form" style={{ width: 420 }}>
+          <p>
+            <Input placeholder="Username" />
+          </p>
+          <p>
+            <Input type="password" placeholder="Password" />
+          </p>
+
+          <SubmitBtn>Login</SubmitBtn>
+        </Card>
       </Wrapper>
     );
   }

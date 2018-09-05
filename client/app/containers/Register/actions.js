@@ -4,10 +4,29 @@
  *
  */
 
-import { DEFAULT_ACTION } from "./constants";
+import {
+  REGISTER_ACCT,
+  REGISTER_ACCT_SUCCESS,
+  REGISTER_ACCT_FAILED
+} from './constants';
 
-export function defaultAction() {
+export function registerAcct(payload) {
   return {
-    type: DEFAULT_ACTION
+    type: REGISTER_ACCT,
+    payload
+  };
+}
+
+export function registerAcctSuccess(payload) {
+  return {
+    type: REGISTER_ACCT_SUCCESS,
+    payload
+  };
+}
+
+export function registerAcctFailed(payload) {
+  return {
+    type: REGISTER_ACCT_FAILED,
+    payload
   };
 }

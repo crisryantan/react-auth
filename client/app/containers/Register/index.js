@@ -18,6 +18,8 @@ import makeSelectRegister from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
+import { registerAcct } from './actions';
+
 import { Card, Input, Select } from 'antd';
 import styled from 'styled-components';
 
@@ -36,8 +38,21 @@ export class Register extends React.PureComponent {
       username: '',
       password: '',
       fullname: '',
-      userType: ''
+      userType: 'User'
     }
+  };
+
+  updateField = (value, key) => {
+    this.setState({
+      form: {
+        ...this.state.form,
+        [key]: value
+      }
+    });
+  };
+
+  registerUser = () => {
+    this.props.registerAcct(this.state.form);
   };
 
   render() {
@@ -45,19 +60,33 @@ export class Register extends React.PureComponent {
       <Wrapper>
         <Card title="Register Form" style={cardWidth}>
           <p>
-            <Input placeholder="Username" />
+            <Input
+              placeholder="Username"
+              onChange={e => this.updateField(e.target.value, 'username')}
+            />
           </p>
           <p>
-            <Input type="password" placeholder="Password" />
+            <Input
+              type="password"
+              placeholder="Password"
+              onChange={e => this.updateField(e.target.value, 'password')}
+            />
           </p>
           <p>
-            <Input placeholder="Fullname" />
+            <Input
+              placeholder="Fullname"
+              onChange={e => this.updateField(e.target.value, 'fullname')}
+            />
           </p>
-          <Select defaultValue="User" style={{ width: '100%' }}>
+          <Select
+            defaultValue="User"
+            onChange={value => this.updateField(value, 'userType')}
+            style={{ width: '100%' }}
+          >
             <Option value="User">User</Option>
             <Option value="Admin">Admin</Option>
           </Select>
-          <SubmitBtn>Register</SubmitBtn>
+          <SubmitBtn onClick={this.registerUser}>Register</SubmitBtn>
         </Card>
       </Wrapper>
     );
@@ -65,7 +94,7 @@ export class Register extends React.PureComponent {
 }
 
 Register.propTypes = {
-  dispatch: PropTypes.func.isRequired
+  registerAcct: PropTypes.func.isRequired
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -74,7 +103,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch
+    registerAcct: payload => dispatch(registerAcct(payload))
   };
 }
 

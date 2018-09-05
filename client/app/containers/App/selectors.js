@@ -1,8 +1,17 @@
 import { createSelector } from 'reselect';
+import { initialState } from './reducer';
 
-const selectRoute = state => state.get('route');
+/**
+ * Direct selector to the app state domain
+ */
 
-const makeSelectLocation = () =>
-  createSelector(selectRoute, routeState => routeState.get('location').toJS());
+const selectAppDomain = state => state.get('app', initialState);
 
-export { makeSelectLocation };
+/**
+ * Other specific selectors
+ */
+
+const makeSelectLoading = () =>
+  createSelector(selectAppDomain, substate => substate.get('loading'));
+
+export { makeSelectLoading };
