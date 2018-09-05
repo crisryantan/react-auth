@@ -7,6 +7,7 @@ import { postRequest } from 'utils/request';
 import { getSavedUser } from 'containers/App/saga';
 
 import { USER_LOGIN } from './constants';
+import { userLoginError } from './actions';
 
 export function* loginAcct({ payload }) {
   const requestURL = `/login`;
@@ -17,6 +18,7 @@ export function* loginAcct({ payload }) {
     const redirectTo = '/';
     yield put(push(redirectTo));
   } catch ({ data }) {
+    yield put(userLoginError());
     message.error(data.error.message);
   }
 }

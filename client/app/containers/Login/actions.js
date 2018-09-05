@@ -13,9 +13,8 @@ export function userLogin(payload) {
   };
 }
 
-export function userLoginError(error) {
+export function userLoginError() {
   return {
     type: USER_LOGIN_ERROR,
-    error,
   };
 }
