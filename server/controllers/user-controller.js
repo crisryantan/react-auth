@@ -43,58 +43,54 @@ function tokenExpired(res) {
 
 module.exports = {
   create: function(req, res) {
-    const authenticated = verifyToken(req.header('token'));
-    if (authenticated === 200) {
-      return User.findOne({ username: req.body.username }, function(
-        err,
-        existingUser
-      ) {
-        if (existingUser) {
-          return res.status(401).send({
-            error: {
-              message: 'username is already taken.'
-            }
-          });
-        }
-
-        const hasAllFields = requiredFields.every(field => {
-          return req.body[field];
+    return User.findOne({ username: req.body.username }, function(
+      err,
+      existingUser
+    ) {
+      if (existingUser) {
+        return res.status(401).send({
+          error: {
+            message: 'username is already taken.'
+          }
         });
+      }
 
-        if (!hasAllFields) {
-          return res.status(401).send({
-            error: {
-              message: 'enter all required fields.'
-            }
-          });
-        }
+      const hasAllFields = requiredFields.every(field => {
+        return req.body[field];
+      });
 
-        const user = new User({
-          password: req.body.password,
-          username: req.body.username,
-          fullname: req.body.fullname,
-          userType: req.body.userType
+      if (!hasAllFields) {
+        return res.status(401).send({
+          error: {
+            message: 'enter all required fields.'
+          }
         });
+      }
 
-        bcrypt.genSalt(10, function(err, salt) {
-          bcrypt.hash(user.password, salt, function(err, hash) {
-            user.password = hash;
+      const user = new User({
+        password: req.body.password,
+        username: req.body.username,
+        fullname: req.body.fullname,
+        userType: req.body.userType
+      });
 
-            user.save(function() {
-              const token = createToken(user);
-              res.send({ token: token, user: user });
-            });
+      bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(user.password, salt, function(err, hash) {
+          user.password = hash;
+
+          user.save(function() {
+            const token = createToken(user);
+            res.send({ token: token, user: user });
           });
         });
       });
-    }
-    return tokenExpired(res);
+    });
   },
 
   findAll: function(req, res) {
     const authenticated = verifyToken(req.header('token'));
     if (authenticated === 200) {
-      User.find(
+      return User.find(
         {
           deleted: false
         },
@@ -116,7 +112,7 @@ module.exports = {
   findById: function(req, res) {
     const authenticated = verifyToken(req.header('token'));
     if (authenticated === 200) {
-      User.findOne({ _id: req.params.id }, '', function(err, user) {
+      return User.findOne({ _id: req.params.id }, '', function(err, user) {
         if (err) {
           return res.send(err);
         } else {
@@ -163,7 +159,7 @@ module.exports = {
   deleteById: function(req, res) {
     const authenticated = verifyToken(req.header('token'));
     if (authenticated === 200) {
-      User.findOneAndUpdate(
+      return User.findOneAndUpdate(
         { _id: req.params.id },
         { deleted: true },
         { upsert: true },
