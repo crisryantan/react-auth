@@ -186,21 +186,25 @@ module.exports = {
   /**
    * Authenticate credentials using username and password
    */
+
   login: function(req, res) {
-    User.findOne({ username: req.body.username }, '+password', function(
-      err,
-      user
-    ) {
+    console.log(req.body.username);
+    User.findOne({ username: req.body.username }, '', function(err, user) {
       if (!user) {
-        return res
-          .status(401)
-          .send({ message: { username: 'Incorrect username' } });
+        return res.status(401).send({
+          error: {
+            message: 'Incorrect username'
+          }
+        });
       }
+
       bcrypt.compare(req.body.password, user.password, function(err, isMatch) {
         if (!isMatch) {
-          return res
-            .status(401)
-            .send({ message: { password: 'Incorrect password' } });
+          return res.status(401).send({
+            error: {
+              message: 'Incorrect password'
+            }
+          });
         }
 
         user = user.toObject();
