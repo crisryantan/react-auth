@@ -1,9 +1,7 @@
-export const storageVersion = 'v1';
-
 export const userStateSave = state => {
   // eslint-disable-line consistent-return
   try {
-    const serializedState = JSON.stringify({ ...state, storageVersion });
+    const serializedState = JSON.stringify({ ...state });
     return localStorage.setItem('user', serializedState);
   } catch (error) {
     return undefined;
@@ -18,10 +16,6 @@ export const userStateLoad = () => {
       return undefined;
     }
     const userState = JSON.parse(serializedState);
-
-    if (userState.storageVersion !== storageVersion) {
-      return undefined;
-    }
 
     return userState;
   } catch (error) {

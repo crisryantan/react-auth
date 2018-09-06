@@ -1,8 +1,8 @@
 import { fromJS } from 'immutable';
-import app2Reducer from '../reducer';
+import appReducer from '../reducer';
 
-describe('app2Reducer', () => {
+describe('appReducer', () => {
   it('returns the initial state', () => {
-    expect(app2Reducer(undefined, {})).toEqual(fromJS({}));
+    expect(appReducer(undefined, {})).toEqual(fromJS({}));
   });
 });

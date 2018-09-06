@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
 /**
- * Direct selector to the app state domain
+ * Direct selector to the login state domain
  */
 
 const selectLoginDomain = state => state.get('login', initialState);

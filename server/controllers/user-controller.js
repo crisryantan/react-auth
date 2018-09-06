@@ -188,7 +188,6 @@ module.exports = {
    */
 
   login: function(req, res) {
-    console.log(req.body.username);
     User.findOne({ username: req.body.username }, '', function(err, user) {
       if (!user) {
         return res.status(401).send({

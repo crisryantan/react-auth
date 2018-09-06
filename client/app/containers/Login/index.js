@@ -86,6 +86,7 @@ export class Login extends React.Component {
 }
 
 Login.propTypes = {
+  userLogin: PropTypes.func.isRequired,
   loggedIn: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
 };

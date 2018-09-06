@@ -8,33 +8,17 @@ import { createStructuredSelector } from 'reselect';
 import { makeSelectAuthorized } from 'containers/App/selectors';
 
 const PrivateRoute = props => {
-  const {
-    isLoading,
-    component: Component,
-    render: Render,
-    isLoggedIn,
-    computedMatch,
-    ...otherProps
-  } = props;
+  const { isLoading, component: Component, isLoggedIn, ...otherProps } = props;
 
   if (isLoading) {
     return null;
   }
 
   const authorizedContent = () => renderProps => {
-    const componentWithProps = Render ? (
-      <Render {...renderProps} />
-    ) : (
-      <Component {...renderProps} />
-    );
-    const { stepName } = computedMatch.params;
+    const componentWithProps = <Component {...renderProps} />;
 
     if (!isLoggedIn) {
       return <Redirect to={{ pathname: '/login' }} />;
-    }
-
-    if (!stepName) {
-      return componentWithProps;
     }
 
     return componentWithProps;
@@ -44,11 +28,6 @@ const PrivateRoute = props => {
 };
 
 PrivateRoute.propTypes = {
-  computedMatch: PropTypes.shape({
-    params: PropTypes.shape({
-      stepName: PropTypes.string,
-    }),
-  }),
   component: PropTypes.func,
   render: PropTypes.func,
   isLoggedIn: PropTypes.bool,

@@ -17,4 +17,7 @@ const makeSelectLoading = () =>
 const makeSelectAuthorized = () =>
   createSelector(selectAppDomain, substate => substate.get('authorized'));
 
-export { makeSelectLoading, makeSelectAuthorized };
+const makeSelectUser = () =>
+  createSelector(selectAppDomain, substate => substate.get('user'));
+
+export { makeSelectLoading, makeSelectAuthorized, makeSelectUser };

@@ -17,12 +17,14 @@ import injectReducer from 'utils/injectReducer';
 import PrivateRoute from 'router/PrivateRoute';
 
 import Header from 'components/Header';
+import AdminAuthComponent from 'components/AdminAuthComponent';
+
 import HomePage from 'containers/HomePage/Loadable';
 import Login from 'containers/Login/Loadable';
 import Register from 'containers/Register/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
-import { makeSelectLoading } from './selectors';
+import { makeSelectLoading, makeSelectUser } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
@@ -34,9 +36,14 @@ export class App extends React.PureComponent {
     this.props.appStarted();
   }
 
-  applicationRoutes = isLoading => (
+  applicationRoutes = (isLoading, user) => (
     <Switch>
-      <PrivateRoute exact path="/" component={HomePage} isLoading={isLoading} />
+      <PrivateRoute
+        exact
+        path="/"
+        component={AdminAuthComponent(HomePage, user)}
+        isLoading={isLoading}
+      />
       <Route exact path="/login" component={Login} />
       <Route exact path="/register" component={Register} />
       <Route component={NotFoundPage} />
@@ -44,11 +51,11 @@ export class App extends React.PureComponent {
   );
 
   render() {
-    const { loading } = this.props;
+    const { loading, user } = this.props;
     return (
       <div>
         <Header />
-        {!loading && this.applicationRoutes(loading)}
+        {!loading && this.applicationRoutes(loading, user)}
       </div>
     );
   }
@@ -61,6 +68,7 @@ App.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   loading: makeSelectLoading(),
+  user: makeSelectUser(),
 });
 
 function mapDispatchToProps(dispatch) {
