@@ -2,7 +2,6 @@ import {
   GET_USERS,
   GET_USERS_SUCCESS,
   UPDATE_USERS,
-  UPDATE_USERS_SUCCESS,
   DELETE_USERS,
   DELETE_USERS_SUCCESS,
 } from './constants';
@@ -27,23 +26,9 @@ export function updateUser(user) {
   };
 }
 
-export function updateUserSuccess(user) {
-  return {
-    type: UPDATE_USERS_SUCCESS,
-    user,
-  };
-}
-
-export function deleteUser(user) {
+export function deleteUser(id) {
   return {
     type: DELETE_USERS,
-    user,
-  };
-}
-
-export function deleteUserSuccess(user) {
-  return {
-    type: DELETE_USERS_SUCCESS,
-    user,
+    id,
   };
 }

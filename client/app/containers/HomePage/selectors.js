@@ -13,6 +13,8 @@ const selectHomePageDomain = state => state.get('homePage', initialState);
 const makeSelectLoading = () =>
   createSelector(selectHomePageDomain, substate => substate.get('loading'));
 const makeSelectUsers = () =>
-  createSelector(selectHomePageDomain, substate => substate.get('users'));
+  createSelector(selectHomePageDomain, substate =>
+    substate.get('users').toJS(),
+  );
 
 export { makeSelectLoading, makeSelectUsers };

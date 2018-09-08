@@ -8,8 +8,6 @@ import { fromJS } from 'immutable';
 import {
   GET_USERS,
   GET_USERS_SUCCESS,
-  // UPDATE_USERS,
-  // UPDATE_USERS_SUCCESS,
   // DELETE_USERS,
   // DELETE_USERS_SUCCESS,
 } from './constants';
@@ -25,7 +23,7 @@ function homePageReducer(state = initialState, action) {
       return state.set('loading', true);
 
     case GET_USERS_SUCCESS:
-      return state.set('loading', false).set('users', action.users);
+      return state.set('loading', false).set('users', fromJS(action.users));
 
     default:
       return state;
