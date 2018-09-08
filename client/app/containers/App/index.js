@@ -28,7 +28,7 @@ import { makeSelectLoading, makeSelectUser } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
-import { appStarted } from './actions';
+import { appStarted, userLogout } from './actions';
 
 /* eslint-disable react/prefer-stateless-function */
 export class App extends React.PureComponent {
@@ -54,7 +54,7 @@ export class App extends React.PureComponent {
     const { loading, user } = this.props;
     return (
       <div>
-        <Header />
+        <Header userLogout={this.props.userLogout} />
         {!loading && this.applicationRoutes(loading, user)}
       </div>
     );
@@ -63,6 +63,7 @@ export class App extends React.PureComponent {
 
 App.propTypes = {
   appStarted: PropTypes.func.isRequired,
+  userLogout: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
 };
 
@@ -74,6 +75,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     appStarted: () => dispatch(appStarted()),
+    userLogout: () => dispatch(userLogout()),
   };
 }
 

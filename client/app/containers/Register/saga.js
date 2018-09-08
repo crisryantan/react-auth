@@ -16,16 +16,15 @@ export function* registerAcct({ payload, adminCreate }) {
     if (adminCreate) {
       // if admin created, call getUser to refresh list
       yield call(getUsers);
-      message.success('Successfully created user.')
+      message.success('Successfully created user.');
     } else {
       // if user created, redirect user to homepage
       userStateSave({ token: data.token, ...data.user });
       yield call(getSavedUser);
       const redirectTo = '/';
       yield put(push(redirectTo));
-      message.success('Successfully signed up user.')
+      message.success('Successfully signed up user.');
     }
-
   } catch ({ data }) {
     message.error(data.error.message);
   }

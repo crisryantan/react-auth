@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Button, List } from 'antd';
+import { List } from 'antd';
 import styled from 'styled-components';
 
 import injectSaga from 'utils/injectSaga';
@@ -17,6 +17,7 @@ import injectReducer from 'utils/injectReducer';
 
 import User from 'components/User';
 import UserModal from 'components/UserModal';
+import Filters from 'components/Filters';
 import { makeSelectUser } from 'containers/App/selectors';
 
 import { makeSelectLoading, makeSelectUsers } from './selectors';
@@ -28,64 +29,91 @@ const Wrapper = styled.div`
   padding: 40px;
 `;
 
-const StyledBtn = styled(Button)`
-  float: right;
-`;
-
 /* eslint-disable react/prefer-stateless-function */
 export class HomePage extends React.PureComponent {
-
   state = {
     modalVisible: false,
     userData: {},
-  }
+    filters: {
+      keyword: '',
+      userType: 'Any',
+    },
+  };
 
   componentDidMount() {
     this.props.getUsers();
   }
 
-  showUserModal = (userData) => {
+  filterUsers = users => {
+    let filteredUsers = users;
+    const { keyword, userType } = this.state.filters;
+
+    if (keyword) {
+      filteredUsers = filteredUsers.filter(user =>
+        user.username.includes(keyword),
+      );
+    }
+
+    if (userType !== 'Any') {
+      filteredUsers = filteredUsers.filter(user => user.userType === userType);
+    }
+
+    return filteredUsers;
+  };
+
+  updateFilter = (key, filter) => {
+    const filters = {
+      ...this.state.filters,
+      [key]: filter,
+    };
+
+    this.setState({
+      filters,
+    });
+  };
+
+  showUserModal = userData => {
     this.setState({
       userData,
       modalVisible: true,
     });
-  }
+  };
 
-  handleOk = (user) => {
+  handleOk = user => {
     this.props.updateUser(user);
     this.setState({
       modalVisible: false,
       userData: {},
     });
-  }
+  };
 
   handleCancel = () => {
     this.setState({
       modalVisible: false,
       userData: {},
     });
-  }
+  };
 
   render() {
     const { users, loading, currentUser } = this.props;
     const { modalVisible, userData } = this.state;
+    const filteredUsers = this.filterUsers(users);
+
     return (
       <Wrapper>
-        <StyledBtn
-          type="primary"
-          onClick={() => this.showUserModal({ userType: 'User' })}
-        >
-          Create User
-        </StyledBtn>
+        <Filters
+          showUserModal={this.showUserModal}
+          updateFilter={this.updateFilter}
+        />
 
-        {modalVisible &&
+        {modalVisible && (
           <UserModal
             visible={modalVisible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
             user={userData}
           />
-        }
+        )}
         <List
           itemLayout="vertical"
           loading={loading}
@@ -95,9 +123,9 @@ export class HomePage extends React.PureComponent {
           }}
           style={{
             margin: '0 auto',
-            width: 720
+            width: 720,
           }}
-          dataSource={users}
+          dataSource={filteredUsers}
           renderItem={user => (
             <User
               key={user.title}
@@ -115,6 +143,8 @@ export class HomePage extends React.PureComponent {
 
 HomePage.propTypes = {
   getUsers: PropTypes.func.isRequired,
+  updateUser: PropTypes.func.isRequired,
+  deleteUser: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   users: PropTypes.array.isRequired,
   currentUser: PropTypes.object.isRequired,
@@ -129,8 +159,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getUsers: () => dispatch(getUsers()),
-    updateUser: (user) => dispatch(updateUser(user)),
-    deleteUser: (id) => dispatch(deleteUser(id)),
+    updateUser: user => dispatch(updateUser(user)),
+    deleteUser: id => dispatch(deleteUser(id)),
   };
 }
 

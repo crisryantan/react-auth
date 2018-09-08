@@ -5,16 +5,15 @@
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
-// import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { Input, Select, Modal } from 'antd';
 const { Option } = Select;
 
-/* eslint-disable react/prefer-stateless-function */
+/* eslint-disable react/prefer-stateless-function no-underscore-dangle */
 class UserModal extends React.PureComponent {
   state = {
     ...this.props.user,
-  }
+  };
 
   updateField = (value, key) => {
     this.setState({
@@ -24,13 +23,7 @@ class UserModal extends React.PureComponent {
 
   render() {
     const { onOk, onCancel } = this.props;
-    const {
-      _id,
-      username,
-      fullname,
-      userType,
-      password
-    } = this.state;
+    const { _id, username, fullname, userType, password } = this.state;
 
     return (
       <Modal
@@ -47,18 +40,16 @@ class UserModal extends React.PureComponent {
             onChange={e => this.updateField(e.target.value, 'username')}
           />
         </p>
-        {!_id &&
-          (
-            <p>
-              <Input
-                type="password"
-                defaultValue={password}
-                placeholder="Password"
-                onChange={e => this.updateField(e.target.value, 'password')}
-              />
-            </p>
-          )
-        }
+        {!_id && (
+          <p>
+            <Input
+              type="password"
+              defaultValue={password}
+              placeholder="Password"
+              onChange={e => this.updateField(e.target.value, 'password')}
+            />
+          </p>
+        )}
         <p>
           <Input
             placeholder="Fullname"
@@ -79,6 +70,10 @@ class UserModal extends React.PureComponent {
   }
 }
 
-UserModal.propTypes = {};
+UserModal.propTypes = {
+  onOk: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+};
 
 export default UserModal;

@@ -3,7 +3,6 @@ import {
   GET_USERS_SUCCESS,
   UPDATE_USERS,
   DELETE_USERS,
-  DELETE_USERS_SUCCESS,
 } from './constants';
 
 export function getUsers() {

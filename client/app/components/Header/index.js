@@ -41,7 +41,7 @@ const NavWrapper = styled.nav`
 
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
-function Header() {
+function Header(props) {
   return (
     <NavWrapper>
       <ul>
@@ -53,6 +53,9 @@ function Header() {
         </li>
         <li>
           <Link to="/register">Register</Link>
+        </li>
+        <li onClick={props.userLogout}>
+          <Link to="/login">Logout</Link>
         </li>
       </ul>
     </NavWrapper>

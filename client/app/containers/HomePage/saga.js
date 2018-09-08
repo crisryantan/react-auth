@@ -7,6 +7,7 @@ import { registerAcct } from 'containers/Register/saga';
 import { getUsersSuccess } from './actions';
 import { GET_USERS, UPDATE_USERS, DELETE_USERS } from './constants';
 
+/* eslint-disable no-underscore-dangle */
 export function* getUsers() {
   const requestURL = `/allUsers`;
   try {
@@ -23,9 +24,9 @@ export function* updateUser({ user }) {
     if (user._id) {
       yield call(putRequest, requestURL, user);
       yield call(getUsers);
-      message.success('Successfully updated user.')
+      message.success('Successfully updated user.');
     } else {
-      yield call(registerAcct, { payload: user, adminCreate: true })
+      yield call(registerAcct, { payload: user, adminCreate: true });
     }
   } catch ({ data }) {
     message.error(data.error.message);
@@ -37,7 +38,7 @@ export function* deleteUser({ id }) {
   try {
     yield call(deleteRequest, requestURL);
     yield call(getUsers);
-    message.success('Successfully deleted user.')
+    message.success('Successfully deleted user.');
   } catch ({ data }) {
     message.error(data.error.message);
   }

@@ -3,7 +3,7 @@ import { userStateLoad, userStateDelete } from 'utils/localStorage';
 import { postRequest, setToken } from 'utils/request';
 
 import { userLoggedIn, userLogout as userLogoutAction } from './actions';
-import { APP_STARTED } from './constants';
+import { APP_STARTED, USER_LOGOUT } from './constants';
 
 export function* getSavedUser() {
   try {
@@ -41,6 +41,11 @@ export function* loadStartResources() {
   yield all([call(getSavedUser)]);
 }
 
+export function* userLogout() {
+  yield call(userStateDelete);
+}
+
 export default function* defaultSaga() {
   yield takeEvery(APP_STARTED, loadStartResources);
+  yield takeEvery(USER_LOGOUT, userLogout);
 }
