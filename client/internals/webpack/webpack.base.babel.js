@@ -23,6 +23,7 @@ module.exports = options => ({
     options.output,
   ), // Merge with env dependent settings
   optimization: options.optimization,
+
   module: {
     rules: [
       {

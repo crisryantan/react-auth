@@ -7,7 +7,7 @@ import { postRequest } from 'utils/request';
 import { getSavedUser } from 'containers/App/saga';
 
 import { USER_LOGIN } from './constants';
-import { userLoginError } from './actions';
+import { userLoginSuccess, userLoginError } from './actions';
 
 export function* loginAcct({ payload }) {
   const requestURL = `/login`;
@@ -16,6 +16,7 @@ export function* loginAcct({ payload }) {
     userStateSave({ token: data.token, ...data.user });
     yield call(getSavedUser);
     const redirectTo = '/';
+    yield put(userLoginSuccess());
     yield put(push(redirectTo));
   } catch ({ data }) {
     yield put(userLoginError());

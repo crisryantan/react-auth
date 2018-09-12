@@ -1,6 +1,5 @@
 # Don't check auto-generated stuff into git
 coverage
-build
 node_modules
 stats.json
 yarn.lock
@@ -10,3 +9,8 @@ package-lock.json
 .DS_Store
 npm-debug.log
 .idea
+
+# Deployment
+up.json
+public/
+build/

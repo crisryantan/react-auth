@@ -1,22 +1,25 @@
 'use strict';
 
-var express = require('express');
-var app = express();
-var cors = require('cors');
-var bodyParser = require('body-parser');
-var logger = require('morgan');
-var port = process.env.PORT || 8001;
-var four0four = require('./utils/404')();
-var mongoose = require('mongoose');
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const logger = require('morgan');
+const mongoose = require('mongoose');
+const path = require('path');
 
-var environment = process.env.NODE_ENV;
-var dbURI = 'mongodb://localhost/USER_RECORDS';
+const app = express();
+
+const {
+  DB_URL: dbUrl = 'mongodb://localhost/USER_RECORDS',
+  NODE_ENV: environment = '',
+  PORT: port = 8001
+} = process.env;
 
 // connect db
-mongoose.connect(dbURI);
+mongoose.connect(dbUrl);
 
-mongoose.connection.on('connected', function() {
-  console.log('Mongoose default connection open to ' + dbURI);
+mongoose.connection.on('connected', () => {
+  console.log(`Mongoose default connection open to  ${dbUrl}`);
 });
 
 app.use(cors());
@@ -24,12 +27,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
 
-app.use('/api', require('./routes/routes'));
+app.use('/api', require('./routes'));
+
+app.use(express.static('public'));
+app.use((req, res) => {
+  res.send(path.join(__dirname, '/index.html'));
+});
 
 console.log('About to crank up node');
-console.log('PORT=' + port);
-console.log('NODE_ENV=' + environment);
+console.log(`PORT= ${port}`);
+console.log(`NODE_ENV= ${environment}`);
 
-app.listen(port, function() {
-  console.log('Express server listening on port ' + port);
+app.listen(port, () => {
+  console.log(`Express server listening on port ${port}`);
 });
