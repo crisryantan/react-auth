@@ -1,5 +1,10 @@
 # React auth
 
+### Documentation of Client and Server
+
+- [Frontend structure documentation](https://github.com/xxryan1234/react-auth/blob/master/client/README.md)
+- [Backend structure documentation](https://github.com/xxryan1234/react-auth/blob/master/server/README.md)
+
 ### Setup and Run
 
 - `$ git clone git@github.com:xxryan1234/react-auth.git` will download the app and cd to the folder once done.
