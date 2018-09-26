@@ -27,18 +27,23 @@
   ```
   server
   │
-  ├── config
-  │   └── index.js
   │
   ├── controllers
-  │   └── user-controller.js
+  │   └── user.js
+  │
+  ├── middlewares
+  │   └── auth.js
   │
   ├── models
   │   └── user-model.js
   │
   ├── routes
   │   └── routes.js
+  |
+  ├── utils
+  │   └── index.js
   │
+  ├── config.json
   ├── README.md
   └── app.js
   ```
