@@ -35,15 +35,25 @@ const Wrapper = styled.div`
   }
 
   input[type='search'] {
-    flex-basis: 565px;
+    flex-basis: 620px;
+    padding-left: 20px;
+    background-color: #4c4c4c;
+    color: #fff;
   }
 
-  .flex-form input[type='submit'] {
+  .form-btn-wrapper {
+    text-align: right;
+  }
+
+  .open-form-btn {
     background: #ff5a5f;
-    border-top: 1px solid #ff5a5f;
-    border-bottom: 1px solid #ff5a5f;
     color: white;
     cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 10px;
+    height: 50px;
+    width: 95px;
+    font-weight: 900;
   }
 `;
 
@@ -52,6 +62,14 @@ class Filters extends React.PureComponent {
   render() {
     return (
       <Wrapper className="cover">
+        <div className="form-btn-wrapper">
+          <input
+            className="open-form-btn"
+            type="submit"
+            value="Create"
+            onClick={() => this.props.showUserModal({ userType: 'User' })}
+          />
+        </div>
         <div className="flex-form">
           <input
             type="search"
@@ -66,12 +84,6 @@ class Filters extends React.PureComponent {
             <option value="Admin">Admin</option>
             <option value="User">User</option>
           </select>
-
-          <input
-            type="submit"
-            value="Create"
-            onClick={() => this.props.showUserModal({ userType: 'User' })}
-          />
         </div>
       </Wrapper>
     );
