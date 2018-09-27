@@ -7,6 +7,8 @@ import { postRequest } from 'utils/request';
 import { getSavedUser } from 'containers/App/saga';
 import { getUsers } from 'containers/HomePage/saga';
 
+import { failedRequest } from 'containers/HomePage/actions';
+
 import { REGISTER_ACCT } from './constants';
 
 export function* registerAcct({ payload, adminCreate }) {
@@ -26,6 +28,7 @@ export function* registerAcct({ payload, adminCreate }) {
       message.success('Successfully signed up user.');
     }
   } catch ({ data }) {
+    yield put(failedRequest());
     message.error(data.error.message);
   }
 }

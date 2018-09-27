@@ -4,7 +4,12 @@ import { message } from 'antd';
 
 import { registerAcct } from 'containers/Register/saga';
 
-import { getUsersSuccess } from './actions';
+import {
+  getUsersSuccess,
+  updateUserSuccess,
+  deleteUserSuccess,
+  failedRequest,
+} from './actions';
 import { GET_USERS, UPDATE_USERS, DELETE_USERS } from './constants';
 
 /* eslint-disable no-underscore-dangle */
@@ -23,12 +28,13 @@ export function* updateUser({ user }) {
   try {
     if (user._id) {
       yield call(putRequest, requestURL, user);
-      yield call(getUsers);
+      yield put(updateUserSuccess(user));
       message.success('Successfully updated user.');
     } else {
       yield call(registerAcct, { payload: user, adminCreate: true });
     }
   } catch ({ data }) {
+    yield put(failedRequest());
     message.error(data.error.message);
   }
 }
@@ -37,9 +43,10 @@ export function* deleteUser({ id }) {
   const requestURL = `/user/${id}`;
   try {
     yield call(deleteRequest, requestURL);
-    yield call(getUsers);
+    yield put(deleteUserSuccess(id));
     message.success('Successfully deleted user.');
   } catch ({ data }) {
+    yield put(failedRequest());
     message.error(data.error.message);
   }
 }
